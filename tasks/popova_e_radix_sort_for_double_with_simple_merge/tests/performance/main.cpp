@@ -12,11 +12,11 @@ namespace popova_e_radix_sort_for_double_with_simple_merge_threads {
 
 class PopovaERadixSortRunPerfTestThreads : public ppc::util::BaseRunPerfTests<InType, OutType> {
  protected:
-  const int kCount_ = 10000;
-  InType input_data_{};
+  const int kCount = 10000;
+  InType input_data{};
 
   void SetUp() override {
-    input_data_ = kCount_;
+    input_data = kCount;
   }
 
   bool CheckTestOutputData(OutType &output_data) final {
@@ -24,7 +24,7 @@ class PopovaERadixSortRunPerfTestThreads : public ppc::util::BaseRunPerfTests<In
   }
 
   InType GetTestInputData() final {
-    return input_data_;
+    return input_data;
   }
 };
 
