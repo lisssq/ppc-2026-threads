@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstddef>
+#include <string>
 #include <tuple>
 
 #include "popova_e_radix_sort_for_double_with_simple_merge/common/include/common.hpp"
@@ -20,8 +21,7 @@ class PopovaERunFuncTestsSEQ : public ppc::util::BaseRunFuncTests<InType, OutTyp
  protected:
   void SetUp() override {
     TestType params = std::get<static_cast<size_t>(ppc::util::GTestParamIndex::kTestParams)>(GetParam());
-    int size = std::get<0>(params);
-    input_data = size;
+    input_data_ = std::get<0>(params);
   }
 
   bool CheckTestOutputData(OutType &output_data) final {
@@ -29,11 +29,11 @@ class PopovaERunFuncTestsSEQ : public ppc::util::BaseRunFuncTests<InType, OutTyp
   }
 
   InType GetTestInputData() final {
-    return input_data;
+    return input_data_;
   }
 
  private:
-  InType input_data = 0;
+  InType input_data_ = 0;
 };
 
 namespace {

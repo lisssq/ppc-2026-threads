@@ -1,6 +1,6 @@
 #include "popova_e_radix_sort_for_double_with_simple_merge/seq/include/ops_seq.hpp"
 
-#include <algorithm>
+#include <cstdint>
 #include <cstring>
 #include <random>
 #include <vector>
@@ -77,7 +77,8 @@ double RandomDouble(double min_val = -100.0, double max_val = 100.0) {
 
 std::vector<double> MergeSorted(const std::vector<double> &left, const std::vector<double> &right) {
   std::vector<double> result;
-  size_t i = 0, j = 0;
+  size_t i = 0;
+  size_t j = 0;  // Разделено
   while (i < left.size() && j < right.size()) {
     if (left[i] <= right[j]) {
       result.push_back(left[i++]);
@@ -159,6 +160,8 @@ bool PopovaERadixSorForDoubleWithSimpleMergeSEQ::RunImpl() {
   size_t mid = array_.size() / 2;
   std::vector<uint64_t> left_bits;
   std::vector<uint64_t> right_bits;
+  left_bits.reserve(mid);
+  right_bits.reserve(array_.size() - mid);
 
   for (size_t i = 0; i < mid; ++i) {
     left_bits.push_back(DoubleToSortable(array_[i]));
