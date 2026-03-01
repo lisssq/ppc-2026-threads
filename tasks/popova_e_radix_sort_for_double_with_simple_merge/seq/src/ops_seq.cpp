@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "popova_e_radix_sort_for_double_with_simple_merge/common/include/common.hpp"
-#include "util/include/util.hpp"
 
 namespace popova_e_radix_sort_for_double_with_simple_merge_threads {
 namespace {
@@ -62,12 +61,6 @@ void RadixSortUInt(std::vector<uint64_t> &arr) {
   }
 }
 
-// double RandomDouble(double min = -100.0, double max = 100.0) {
-// int r = rand() % 10000;
-// double value = min + (r / 10000.0) * (max - min);
-// return value;
-// }
-
 double RandomDouble(double min_val = -100.0, double max_val = 100.0) {
   static std::random_device rd;
   static std::mt19937 gen(rd());
@@ -78,7 +71,7 @@ double RandomDouble(double min_val = -100.0, double max_val = 100.0) {
 std::vector<double> MergeSorted(const std::vector<double> &left, const std::vector<double> &right) {
   std::vector<double> result;
   size_t i = 0;
-  size_t j = 0;  // Разделено
+  size_t j = 0;
   while (i < left.size() && j < right.size()) {
     if (left[i] <= right[j]) {
       result.push_back(left[i++]);
@@ -143,12 +136,6 @@ bool PopovaERadixSorForDoubleWithSimpleMergeSEQ::PreProcessingImpl() {
     array_[i] = RandomDouble();
   }
 
-  // std::cout << "[DEBUG] Input array: ";
-  // for (size_t i = 0; i < array_.size(); i++) {
-  //   std::cout << std::fixed << std::setprecision(2) << array_[i] << " ";
-  // }
-  // std::cout << std::endl;
-
   return true;
 }
 
@@ -191,12 +178,6 @@ bool PopovaERadixSorForDoubleWithSimpleMergeSEQ::RunImpl() {
 bool PopovaERadixSorForDoubleWithSimpleMergeSEQ::PostProcessingImpl() {
   bool sorted = IsSorted(result_);
   bool same = SameData(array_, result_);
-
-  // std::cout << "[DEBUG] Sorted array: ";
-  // for (size_t i = 0; i < result_.size(); i++) {
-  //   std::cout << std::fixed << std::setprecision(2) << result_[i] << " ";
-  // }
-  // std::cout << std::endl;
 
   if (sorted && same) {
     GetOutput() = 1;
