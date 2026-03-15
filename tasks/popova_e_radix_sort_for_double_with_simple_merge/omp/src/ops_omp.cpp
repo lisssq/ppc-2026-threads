@@ -200,8 +200,8 @@ bool PopovaERadixSorForDoubleWithSimpleMergeOMP::RunImpl() {
   }
 
   // std::cout << "\n--- [STEP 3] MERGING ---" << std::endl;
-    result_.clear();
-    result_ = local_results[0];
+  result_.clear();
+  result_ = local_results[0];
 
   for (int i = 1; i < n_threads; i++) {
     if (!local_results[i].empty()) {
