@@ -162,9 +162,11 @@ bool PopovaERadixSorForDoubleWithSimpleMergeOMP::RunImpl() {
 
   // std::cout << "\n--- [STEP 2] THREAD DISTRIBUTION ---" << std::endl;
 
-// #pragma omp parallel num_threads(n_threads) default(shared)
-#pragma omp parallel num_threads(n_threads) default(none) shared(n, n_threads, array_, local_results)
+  auto &ref_array = array_;
+  auto &ref_local_results = local_results;
 
+// #pragma omp parallel num_threads(n_threads) default(shared)
+#pragma omp parallel num_threads(n_threads) default(none) shared(n, n_threads, ref_array, ref_local_results)
   {
     int thread_id = omp_get_thread_num();
     int left_idx = (thread_id * n) / n_threads;
@@ -172,7 +174,6 @@ bool PopovaERadixSorForDoubleWithSimpleMergeOMP::RunImpl() {
 
     if (left_idx < right_idx) {
       int local_size = right_idx - left_idx;
-
       // #pragma omp critical
       // {
       //     std::cout << "[Thread " << thread_id << "] Range [" << left_idx << ", " << right_idx
@@ -184,15 +185,17 @@ bool PopovaERadixSorForDoubleWithSimpleMergeOMP::RunImpl() {
       // }
 
       std::vector<uint64_t> local_bits(local_size);
+
       for (int i = 0; i < local_size; i++) {
-        local_bits[i] = DoubleToSortable(array_[left_idx + i]);
+        // Используем ссылки и .at()
+        local_bits.at(i) = DoubleToSortable(ref_array.at(left_idx + i));
       }
 
       RadixSortUInt(local_bits);
 
-      local_results[thread_id].resize(local_size);
+      ref_local_results.at(thread_id).resize(local_size);
       for (int i = 0; i < local_size; i++) {
-        local_results[thread_id][i] = SortableToDouble(local_bits[i]);
+        ref_local_results.at(thread_id).at(i) = SortableToDouble(local_bits.at(i));
       }
 
       // #pragma omp critical
@@ -208,21 +211,22 @@ bool PopovaERadixSorForDoubleWithSimpleMergeOMP::RunImpl() {
 
   // std::cout << "\n--- [STEP 3] MERGING ---" << std::endl;
   result_.clear();
-  result_ = local_results[0];
-
-  for (int i = 1; i < n_threads; i++) {
-    if (!local_results[i].empty()) {
-      // std::cout << "[MASTER] Merging with Thread " << i << "..." << std::endl;
-      result_ = MergeSorted(result_, local_results[i]);
+  if (!local_results.empty()) {
+    result_ = local_results.at(0);
+    for (int i = 1; i < n_threads; i++) {
+      if (!local_results.at(i).empty()) {
+        // std::cout << "[MASTER] Merging with Thread " << i << "..." << std::endl;
+        result_ = MergeSorted(result_, local_results.at(i));
+      }
     }
+
+    // std::cout << "\n--- [STEP 4] FINAL RESULT ---" << std::endl;
+    // for (int i = 0; i < std::min(n, 10); ++i) std::cout << result_[i] << " ";
+    // if (n > 10) std::cout << "...";
+    // std::cout << "\n-----------------------------\n" << std::endl;
+
+    return true;
   }
-
-  // std::cout << "\n--- [STEP 4] FINAL RESULT ---" << std::endl;
-  // for (int i = 0; i < std::min(n, 10); ++i) std::cout << result_[i] << " ";
-  // if (n > 10) std::cout << "...";
-  // std::cout << "\n-----------------------------\n" << std::endl;
-
-  return true;
 }
 
 bool PopovaERadixSorForDoubleWithSimpleMergeOMP::PostProcessingImpl() {
