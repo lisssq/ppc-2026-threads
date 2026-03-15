@@ -51,7 +51,9 @@ void RadixSortUInt(std::vector<uint64_t> &arr) {
     std::array<size_t, base> count = {0};
 
     for (const auto &val : arr) {
-      count[(val >> sdvig) & 0xFF]++;
+      // count[(val >> sdvig) & 0xFF]++;
+      size_t pos = (val >> sdvig) & 0xFF;
+      count[pos]++;
     }
 
     size_t offset = 0;
@@ -160,7 +162,9 @@ bool PopovaERadixSorForDoubleWithSimpleMergeOMP::RunImpl() {
 
   // std::cout << "\n--- [STEP 2] THREAD DISTRIBUTION ---" << std::endl;
 
-#pragma omp parallel num_threads(n_threads) default(shared)
+// #pragma omp parallel num_threads(n_threads) default(shared)
+#pragma omp parallel num_threads(n_threads) default(none) \
+    shared(n, n_threads, array_, local_results) private(thread_id, left_idx, right_idx)
   {
     int thread_id = omp_get_thread_num();
     int left_idx = (thread_id * n) / n_threads;
