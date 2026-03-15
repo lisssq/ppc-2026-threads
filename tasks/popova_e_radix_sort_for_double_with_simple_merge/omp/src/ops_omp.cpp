@@ -43,17 +43,17 @@ void RadixSortUInt(std::vector<uint64_t> &arr) {
   if (arr.empty()) {
     return;
   }
+
   const int bytes_count = 8;
   const int base = 256;
   std::vector<uint64_t> buffer(arr.size());
+
   for (int byte_index = 0; byte_index < bytes_count; byte_index++) {
     int sdvig = byte_index * 8;
     std::array<size_t, base> count = {0};
 
     for (const auto &val : arr) {
-      // count[(val >> sdvig) & 0xFF]++;
-      size_t pos = (val >> sdvig) & 0xFF;
-      count[pos]++;
+      count.at((val >> sdvig) & 0xFF)++;  // ПРАВКА: .at()
     }
 
     size_t offset = 0;
@@ -65,8 +65,8 @@ void RadixSortUInt(std::vector<uint64_t> &arr) {
 
     for (const auto &val : arr) {
       size_t pos = (val >> sdvig) & 0xFF;
-      buffer[count[pos]] = val;
-      count[pos]++;
+      buffer.at(count.at(pos)) = val;  // ПРАВКА: .at()
+      count.at(pos)++;                 // ПРАВКА: .at()
     }
     arr = buffer;
   }
