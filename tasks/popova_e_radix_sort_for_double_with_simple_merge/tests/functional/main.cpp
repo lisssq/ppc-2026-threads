@@ -67,7 +67,7 @@ const auto kTestName = PopovaERunFuncTests::PrintFuncTestName<PopovaERunFuncTest
 
 INSTANTIATE_TEST_SUITE_P(RadixSortSEQ, PopovaERunFuncTests, kValuesSEQ, kTestName);
 INSTANTIATE_TEST_SUITE_P(RadixSortOMP, PopovaERunFuncTests, kValuesOMP, kTestName);
-INSTANTIATE_TEST_SUITE_P(RadixSortTBB, PopovaERunFuncTests, kValuesOMP, kTestName);
+INSTANTIATE_TEST_SUITE_P(RadixSortTBB, PopovaERunFuncTests, kValuesTBB, kTestName);
 
 }  // namespace
 }  // namespace popova_e_radix_sort_for_double_with_simple_merge_threads
