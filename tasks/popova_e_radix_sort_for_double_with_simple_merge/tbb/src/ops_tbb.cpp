@@ -2,9 +2,13 @@
 
 #include <tbb/tbb.h>
 
-#include <atomic>
-#include <numeric>
+#include <algorithm>
+#include <array>
+#include <cstdint>
+#include <cstring>
+#include <random>
 #include <util/include/util.hpp>
+#include <utility>
 #include <vector>
 
 #include "oneapi/tbb/parallel_for.h"
@@ -34,7 +38,7 @@ double SortableToDouble(uint64_t bits) {
     bits = ~bits;
   }
   double value = 0;
-  memcpy(&value, &bits, sizeof(double));
+  std::memcpy(&value, &bits, sizeof(double));
   return value;
 }
 
