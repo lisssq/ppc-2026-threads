@@ -11,7 +11,7 @@ namespace popova_e_radix_sort_for_double_with_simple_merge_threads {
 class PopovaERadixSortRunPerfTestThreads : public ppc::util::BaseRunPerfTests<InType, OutType> {
  protected:
   // const int k_count = 10000;
-    const int k_count = 10000000;
+  const int k_count = 10000000;
 
   InType input_data{};
 
