@@ -189,7 +189,6 @@ Toolchain:
 - `OMP_NUM_THREADS=T` — потоков OpenMP на процесс;
 - **total workers** = `P × T`.
 
-
 **Сборка:**
 
 ```bash
