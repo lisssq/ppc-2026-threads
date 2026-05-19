@@ -53,7 +53,7 @@ using OutType = int;
 
 ### Пошаговое описание
 
-Алгоритм состоит из нескольких этапов:
+Алгоритм (SEQ) состоит из нескольких этапов:
 
 1. Генерация массива случайных вещественных чисел (`PreProcessingImpl`);
 2. Разделение массива на две части;
@@ -215,13 +215,13 @@ cmake --build build --config Release --parallel
 
 **Функциональные тесты:**
 
-```bash
+```powershell
 ./build/bin/ppc_func_tests.exe --gtest_filter="*popova_e_radix_sort_for_double_with_simple_merge_threads_seq*"
 ```
 
 **Тесты производительности:**
 
-```bash
+```powershell
 ./build/bin/ppc_perf_tests.exe --gtest_filter="*popova_e_radix_sort_for_double_with_simple_merge_threads_seq*"
 ```
 
