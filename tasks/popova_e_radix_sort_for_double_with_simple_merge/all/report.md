@@ -186,7 +186,9 @@ Toolchain:
 **Конфигурация** задаётся парой:
 
 - `mpiexec -n P` — число MPI-процессов (`P`);
-- `OMP_NUM_THREADS=T` — потоков OpenMP на процесс.
+- `OMP_NUM_THREADS=T` — потоков OpenMP на процесс;
+- **total workers** = `P × T`.
+
 
 **Сборка:**
 
